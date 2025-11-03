@@ -1,0 +1,356 @@
+```html
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Shop · Static Demo</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --brand: #2563eb;
+      --brand-2: #1d4ed8;
+      --card: #f8fafc;
+      --stroke: #e5e7eb;
+      --success: #10b981;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text); background: var(--bg);
+    }
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; border-radius: 12px; }
+    .container { max-width: 1200px; padding: 0 20px; margin: 0 auto; }
+
+    /* Top Bar */
+    .topbar {
+      background: var(--text);
+      color: #fff;
+      font-size: 14px;
+      padding: 8px 0;
+      text-align: center;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1px solid var(--stroke);
+      position: sticky; top: 0; z-index: 10; background: var(--bg);
+    }
+    .nav {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 16px 0;
+    }
+    .brand { font-weight: 800; letter-spacing: .3px; font-size: 22px; }
+    .search {
+      flex: 1; max-width: 560px; display: flex; gap: 8px; align-items: center;
+      background: var(--card); border: 1px solid var(--stroke); padding: 10px 12px; border-radius: 999px;
+    }
+    .search input {
+      border: none; outline: none; background: transparent; flex: 1; font-size: 14px;
+    }
+    .actions { display: flex; gap: 10px; }
+    .btn {
+      border: 1px solid var(--stroke);
+      background: var(--bg);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* Hero */
+    .hero {
+      display: grid; grid-template-columns: 1.2fr .8fr; gap: 16px; align-items: stretch;
+      padding: 24px 0;
+    }
+    .hero-card {
+      position: relative; overflow: hidden; border-radius: 16px; background: linear-gradient(135deg,#e0e7ff,#fafafa);
+      min-height: 260px; border: 1px solid var(--stroke);
+      display: grid; grid-template-columns: 1.1fr .9fr; padding: 24px;
+    }
+    .hero-text { display: flex; flex-direction: column; justify-content: center; gap: 10px; }
+    .hero h1 { margin: 0; font-size: 32px; line-height: 1.1; }
+    .hero p { margin: 0; color: var(--muted); }
+    .cta {
+      display: inline-block; margin-top: 8px; background: var(--brand); color: #fff; padding: 10px 14px;
+      border-radius: 10px; font-weight: 600; border: 1px solid var(--brand-2);
+    }
+    .hero-side {
+      display: grid; gap: 16px;
+    }
+    .tile {
+      border: 1px solid var(--stroke); border-radius: 16px; padding: 16px; background: var(--card);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .pill { background: #eef2ff; color: #3730a3; padding: 6px 10px; border-radius: 999px; font-size: 12px; }
+
+    /* Categories */
+    .categories { display: flex; gap: 10px; overflow: auto; padding-bottom: 4px; }
+    .chip { border: 1px solid var(--stroke); background: var(--bg); padding: 8px 12px; border-radius: 999px; white-space: nowrap; }
+    .chip.active { background: #eff6ff; border-color: #bfdbfe; color: var(--brand-2); }
+
+    /* Grid */
+    .section { padding: 8px 0 32px; }
+    .section h2 { font-size: 22px; margin: 0 0 12px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--bg); border: 1px solid var(--stroke); border-radius: 16px; overflow: hidden;
+      display: flex; flex-direction: column;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.06); }
+    .thumb {
+      background: #e5e7eb; aspect-ratio: 4/3; display: grid; place-items: center; font-weight: 700;
+      color: #374151;
+    }
+    .card-body { padding: 12px; display: grid; gap: 8px; }
+    .title { font-weight: 600; }
+    .price-row { display: flex; align-items: baseline; gap: 8px; }
+    .price { font-weight: 800; }
+    .slash { color: var(--muted); text-decoration: line-through; font-size: 13px; }
+    .rating { font-size: 12px; color: #d97706; }
+    .add {
+      border: 1px solid var(--stroke);
+      background: var(--bg);
+      padding: 10px 12px; border-radius: 10px; font-weight: 600; cursor: pointer;
+    }
+    .add.primary { background: var(--brand); color: #fff; border-color: var(--brand-2); }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--stroke); padding: 24px 0; margin-top: 24px; color: var(--muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 1000px) {
+      .grid { grid-template-columns: repeat(3, minmax(0,1fr)); }
+      .hero { grid-template-columns: 1fr; }
+      .hero-card { grid-template-columns: 1fr; min-height: auto; }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .nav { flex-wrap: wrap; gap: 12px; }
+      .search { order: 3; width: 100%; }
+    }
+
+    /* Hidden white text */
+    .hidden-white { color: #fff; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    Free shipping on orders over $50 · 30-day returns
+  </div>
+
+  <header>
+    <div class="container nav">
+      <div class="brand">ShopLite</div>
+      <form class="search" role="search" aria-label="Search products">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M21 21l-4.3-4.3M10.5 18a7.5 7.5 0 1 1 0-15 7.5 7.5 0 0 1 0 15Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+        <input type="search" placeholder="Search for sneakers, hoodies, gadgets..." />
+      </form>
+      <div class="actions">
+        <button class="btn" type="button">Sign in</button>
+        <button class="btn" type="button">Cart (0)</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-card">
+        <div class="hero-text">
+          <span class="pill">Winter Sale</span>
+          <h1>Up to 40% off bestsellers</h1>
+          <p>Static demo page—buttons won’t bite. Explore cards, prices, and a clean grid layout.</p>
+          <a href="#" class="cta">Shop Deals</a>
+        </div>
+        <div style="display:grid; place-items:center;">
+          <div class="thumb" style="width:100%; aspect-ratio:4/3;">HERO IMAGE</div>
+        </div>
+      </div>
+      <div class="hero-side">
+        <div class="tile">
+          <div>
+            <div style="font-weight:700;">New Arrivals</div>
+            <div class="muted" style="color:var(--muted);">Fresh picks just landed</div>
+          </div>
+          <a href="#" class="btn">Browse</a>
+        </div>
+        <div class="tile" style="background:#ecfdf5; border-color:#d1fae5;">
+          <div>
+            <div style="font-weight:700;">Member Exclusive</div>
+            <div class="muted" style="color:var(--muted);">Extra 10% off</div>
+          </div>
+          <span class="pill" style="background:#d1fae5; color:#065f46;">Join Free</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <nav class="section">
+      <div class="categories" aria-label="Categories">
+        <a class="chip active" href="#">All</a>
+        <a class="chip" href="#">Sneakers</a>
+        <a class="chip" href="#">Hoodies</a>
+        <a class="chip" href="#">Watches</a>
+        <a class="chip" href="#">Audio</a>
+        <a class="chip" href="#">Backpacks</a>
+        <a class="chip" href="#">Accessories</a>
+      </div>
+    </nav>
+
+    <!-- Product Grid -->
+    <section class="section">
+      <h2>Featured Products</h2>
+      <div class="grid">
+        <!-- Card 1 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">CloudStep Sneaker</div>
+            <div class="price-row">
+              <div class="price">$79.00</div>
+              <div class="slash">$99.00</div>
+            </div>
+            <div class="rating">★★★★☆ (412)</div>
+            <button class="add primary" type="button">Add to cart</button>
+          </div>
+        </article>
+        <!-- Card 2 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">ThermaFlex Hoodie</div>
+            <div class="price-row">
+              <div class="price">$49.00</div>
+              <div class="slash">$65.00</div>
+            </div>
+            <div class="rating">★★★★★ (210)</div>
+            <button class="add" type="button">Add to cart</button>
+          </div>
+        </article>
+        <!-- Card 3 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">Pulse Wireless Buds</div>
+            <div class="price-row">
+              <div class="price">$59.00</div>
+            </div>
+            <div class="rating">★★★★☆ (1,024)</div>
+            <button class="add" type="button">Add to cart</button>
+          </div>
+        </article>
+        <!-- Card 4 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">TrailPack Backpack</div>
+            <div class="price-row">
+              <div class="price">$69.00</div>
+              <div class="slash">$89.00</div>
+            </div>
+            <div class="rating">★★★★☆ (318)</div>
+            <button class="add" type="button">Add to cart</button>
+          </div>
+        </article>
+
+        <!-- Card 5 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">Metro Analog Watch</div>
+            <div class="price-row">
+              <div class="price">$120.00</div>
+            </div>
+            <div class="rating">★★★☆☆ (89)</div>
+            <button class="add" type="button">Add to cart</button>
+          </div>
+        </article>
+        <!-- Card 6 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">Voyage Duffel</div>
+            <div class="price-row">
+              <div class="price">$85.00</div>
+              <div class="slash">$110.00</div>
+            </div>
+            <div class="rating">★★★★★ (55)</div>
+            <button class="add primary" type="button">Add to cart</button>
+          </div>
+        </article>
+        <!-- Card 7 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">Quartz Minimal Watch</div>
+            <div class="price-row">
+              <div class="price">$95.00</div>
+            </div>
+            <div class="rating">★★★★☆ (144)</div>
+            <button class="add" type="button">Add to cart</button>
+          </div>
+        </article>
+        <!-- Card 8 -->
+        <article class="card">
+          <div class="thumb">IMAGE</div>
+          <div class="card-body">
+            <div class="title">Canvas Tote</div>
+            <div class="price-row">
+              <div class="price">$22.00</div>
+            </div>
+            <div class="rating">★★★★☆ (61)</div>
+            <button class="add" type="button">Add to cart</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- Promo -->
+    <section class="section">
+      <div class="tile" style="justify-content:center; text-align:center;">
+        <div>
+          <div class="pill" style="margin-bottom:6px;">Newsletter</div>
+          <div style="font-weight:700; font-size:18px;">Get 15% off your first order</div>
+          <div class="muted" style="color:var(--muted); margin:6px 0 12px;">Join our mailing list for updates and offers</div>
+          <div style="display:flex; gap:8px; justify-content:center; flex-wrap:wrap;">
+            <input aria-label="Email address" type="email" placeholder="you@example.com" style="padding:10px 12px; border-radius:10px; border:1px solid var(--stroke); min-width:240px;">
+            <button class="add primary" type="button">Subscribe</button>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container" style="display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:space-between;">
+      <div>© <span id="y"></span> ShopLite. All rights reserved.</div>
+      <nav style="display:flex; gap:12px;">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Contact</a>
+      </nav>
+    </div>
+    <!-- Hidden text per request -->
+    <p class="hidden-white">no kings here</p>
+  </footer>
+
+  <script>
+    // purely cosmetic for the copyright year (still static page behavior)
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+```
